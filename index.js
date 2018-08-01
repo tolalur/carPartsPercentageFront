@@ -1,23 +1,48 @@
 import { h, app } from "hyperapp"
-import { test } from "./test"
+import { DetailsTable } from "./table"
+import * as axios from "axios"
 
 const state = {
-    count: 0
-}
+    detailNumber: '',
+    tableData: [],
+};
 
 const actions = {
     getState: () => state => state,
-    down: value => state => ({ count: state.count - value }),
-    up: value => state => ({ count: state.count + value }),
-    setTest: state => ({count: test})
-}
+    setDetailNumber: value => ({ detailNumber: value }),
+    getData: () => state => {
+        axios.get('/user?ID=12345')
+            .then(function (response) {
+                // handle success
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            
+        return { tableData: [1,2] }
+    }
+};
 
 const view = (state, actions) => (
-    <div>
-        <h1>{state.count}</h1>
-        <button onclick={() => actions.down(1)}>-</button>
-        <button onclick={() => actions.up(1)}>+</button>
-        <button onclick={() => actions.setTest()}>+ +</button>
+    <div class="container">
+        <div class="row">
+            <h3>Сравнение цен на автозапчасти</h3>
+        </div>
+        <div class="row">
+            <div class="row">
+                <div class="twelve columns">
+                    <label for="detailNumber">Введите номер детали</label>
+                    <input class="u-full-width" type="email" id="detailNumber" 
+                        oninput={e => actions.setDetailNumber(e.target.value)} />
+                </div>
+            </div>
+            <input class="button-primary" type="submit" value="Отправить" onclick={() => actions.getData()} />
+        </div>
+        <div class="row">
+            <DetailsTable tableData={state.tableData} />
+        </div>
     </div>
 )
 
