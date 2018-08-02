@@ -11,7 +11,7 @@ const actions = {
     getState: () => state => state,
     setDetailNumber: value => ({ detailNumber: value }),
     getData: () => state => {
-        axios.get('/user?ID=12345')
+        axios.get(`/api/${state.detailNumber}`)
             .then(function (response) {
                 // handle success
                 console.log(response.data);

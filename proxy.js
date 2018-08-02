@@ -1,16 +1,15 @@
-const proxy = require('http-proxy-middleware')
-const Bundler = require('parcel-bundler')
-const express = require('express')
+const Bundler = require('parcel-bundler');
+const express = require('express');
+const proxy = require('http-proxy-middleware');
 
-let bundler = new Bundler('src/index.html')
-let app = express()
+let bundler = new Bundler('./index.html')
+let app = express();
 
 app.use(
-    '/api',
-    proxy({
-        target: 'http://localhost:3000'
-    })
+    '/api/:detailNumber',
+    proxy({ target: 'http://localhost:3000', changeOrigin: true })
 )
 
-console.log('process.env.PORT :', process.env.PORT);
+app.use('/', bundler.middleware());
+
 app.listen(1234);
