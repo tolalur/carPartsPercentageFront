@@ -1,17 +1,35 @@
 import { h, app } from "hyperapp"
 import { DetailsTable } from "./table"
+import { AutoDoc } from "./autodoc"
 import * as axios from "axios"
 
 const state = {
-    detailNumber: '',
+    searchString: '',
+    generalSearch: {
+        autodoc: [],
+        exist: []
+    },
     tableData: [],
 };
 
 const actions = {
     getState: () => state => state,
-    setDetailNumber: value => ({ detailNumber: value }),
-    getData: () => state => {
-        axios.get(`/api/${state.detailNumber}`)
+    setDetailNumber: value => ({ searchString: value }),
+    generalSearch: () => (state, actions)  => {
+        axios.get(`/api/general/${state.searchString}`)
+            .then(function (response) {
+                console.log(response.data);
+                if (response.data) {
+                    actions.setGeneralSearch(response.data);
+                }                
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    },
+    setGeneralSearch: val => state => ({ generalSearch: val }),
+    targetSearch: () => state => {
+        axios.get(`/api/target/${state.searchString}`)
             .then(function (response) {
                 // handle success
                 console.log(response.data);
@@ -38,11 +56,20 @@ const view = (state, actions) => (
                         oninput={e => actions.setDetailNumber(e.target.value)} />
                 </div>
             </div>
-            <input class="button-primary" type="submit" value="Отправить" onclick={() => actions.getData()} />
+            <input class="button-primary" type="submit" value="Поиск" onclick={() => actions.generalSearch()} />
         </div>
         <div class="row">
-            <DetailsTable tableData={state.tableData} />
+            {state.generalSearch.autodoc && state.generalSearch.autodoc.length > 0 ? 
+            <AutoDoc tableData={state.generalSearch.autodoc} /> 
+            : ''}
+            {state.generalSearch.autodoc === null ? 
+            <AutoDoc tableData={null} /> 
+            : ''}
+            
         </div>
+        {/* <div class="row">
+            <DetailsTable tableData={state.tableData} />
+        </div> */}
     </div>
 )
 

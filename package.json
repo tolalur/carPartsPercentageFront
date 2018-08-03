@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "parcel index.html",
+    "start": "node proxy.js",
     "build": "parcel build index.html --public-url ./ prodaction",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

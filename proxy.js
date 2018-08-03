@@ -6,7 +6,11 @@ let bundler = new Bundler('./index.html')
 let app = express();
 
 app.use(
-    '/api/:detailNumber',
+    '/api/general/:detailNumber',
+    proxy({ target: 'http://localhost:3000', changeOrigin: true })
+)
+app.use(
+    '/api/target/:detailNumber/:id',
     proxy({ target: 'http://localhost:3000', changeOrigin: true })
 )
 
