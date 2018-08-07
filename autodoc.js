@@ -1,16 +1,38 @@
 import { h } from "hyperapp"
+const TableDataItem = ({ item, actions}) => (
+    <li>
+        <a href="" onclick={(e) => { 
+            e.preventDefault(); 
+            console.log('item:', item);
+            actions.setAutodocId(item.id);
+            actions.targetSearch();
+        }}>
+            {item.manufacturerName} - {item.partName}
+        </a>
+    </li>
+);
+const TargetSearch = ({ items, actions }) => {
+    return items.map(item => <li>{key} - {item[key]}</li>);
+    
+};
+export const AutoDoc = ({ tableData, actions, targetSearch=null }) => (
+    <div class="tile is-parent">
+        <div class="tile is-child">
+            <div class="content box">
+                <p class="title">Autodoc</p>
+                {!tableData ? <p class="subtitle">Нет предложений</p> : '' }
+                <div class="content">
+                    {tableData && tableData.length > 0 ? (
+                        <ul>
+                            {tableData.map(val => <TableDataItem item={val} actions={actions} />)}
+                        </ul>
+                    ) : ''}
 
-export const AutoDoc = ({ tableData }) => (
-    tableData && tableData.length > 0 ? (
-        <div class="u-full-width data-body">
-            <h4>Autodoc</h4>
-            <ul>
-                {tableData.map(val => <li onclick={(val) => { console.log('val:', val)}}>{val.manufacturerName} - {val.partName}</li>)}
-            </ul>
-        </div>        
-        ) : (
-            <div class="u-full-width">
-                <h4 class="data-body">Autodoc - нет предложений</h4>
+                    {targetSearch ? (
+                        <TargetSearch items={targetSearch.analogs} actions={actions} />
+                    ) : ''}
+                </div>
             </div>
-        )
+        </div>
+    </div>
 );
