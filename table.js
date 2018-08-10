@@ -25,5 +25,5 @@ export const DetailsTable = ({tableData}) => (
                     <td>Hayward</td>
                 </tr>
             </tbody>
-        </table>) : ('')        
+        </table>) : ('')
 );

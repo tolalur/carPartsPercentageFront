@@ -1,0 +1,15 @@
+.good-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1em;
+    padding-top: 1em;
+    border-bottom: 1px solid #eee;
+}
+.good-name {
+    display: flex;
+    flex-direction: column;
+}
+.good-name span.subtitle {
+    line-height: 0.7em
+}

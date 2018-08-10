@@ -5,12 +5,12 @@ import * as axios from "axios"
 const state = {
     searchString: '',
     generalSearch: {
-        autodoc: null,
+        autodoc: [],
         exist: []
     },
     targetSearch: {
         autodoc: {},
-        exist: []
+        exist: {}
     },
     autodocId:''
 };
@@ -21,7 +21,7 @@ const actions = {
     generalSearch: () => (state, actions)  => {
         axios.get(`/api/general/${state.searchString}`)
             .then(function (response) {
-                console.log(response.data);
+                console.log('generalSearch response', response.data);
                 if (response.data) {
                     actions.setGeneralSearch(response.data);
                 }
@@ -31,7 +31,6 @@ const actions = {
             })
     },
     targetSearch: () => (state, actions) => {
-        console.log('targetSearch, autodocId', state.autodocId);
         axios.get(`/api/target/${state.searchString}/${state.autodocId}`)
             .then((response) => {
                 console.log('targetSearch response', response.data);
@@ -88,15 +87,21 @@ const view = (state, actions) => (
         <Header />
         <Search actions={actions} />
         <div class="tile is-ancestor">
-            {state.generalSearch.autodoc === null ?
-                <AutoDoc tableData={null} /> : ''}
-
-            {state.generalSearch.autodoc && state.generalSearch.autodoc.length > 0 ?
-                <AutoDoc tableData={state.generalSearch.autodoc} actions={actions} /> : ''}
-
-            {state.targetSearch.autodoc && Object.keys(state.targetSearch.autodoc).length > 0 ?
+            {(state.targetSearch.autodoc && Object.keys(state.targetSearch.autodoc).length > 0) ||
+                (state.generalSearch.autodoc && state.generalSearch.autodoc.length > 0) ?
                 <AutoDoc 
+                    title={'Autodoc'}
+                    generalSearch={state.generalSearch.autodoc}
                     targetSearch={state.targetSearch.autodoc}
+                    actions={actions} /> 
+                : ''}
+
+            {(state.targetSearch.exist && Object.keys(state.targetSearch.exist).length > 0) ||
+                (state.generalSearch.exist && state.generalSearch.exist.length > 0) ?
+                <AutoDoc 
+                    title={'Exist'}
+                    generalSearch={state.generalSearch.exist}
+                    targetSearch={state.targetSearch.exist}
                     actions={actions} /> 
                 : ''}
         </div>
