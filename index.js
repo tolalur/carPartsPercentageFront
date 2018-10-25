@@ -1,6 +1,6 @@
-import { h, app } from "hyperapp"
-import { AutoDoc } from "./autodoc"
-import * as axios from "axios"
+import { h, app } from 'hyperapp';
+import { AutoDoc } from './autodoc';
+import * as axios from 'axios';
 
 const state = {
     searchString: '',
@@ -12,13 +12,13 @@ const state = {
         autodoc: {},
         exist: {}
     },
-    autodocId:''
+    autodocId: ''
 };
 
 const actions = {
     getState: () => state => state,
     setDetailNumber: value => ({ searchString: value }),
-    generalSearch: () => (state, actions)  => {
+    generalSearch: () => (state, actions) => {
         axios.get(`/api/general/${state.searchString}`)
             .then(function (response) {
                 console.log('generalSearch response', response.data);
@@ -45,7 +45,7 @@ const actions = {
     },
     setGeneralSearch: val => state => ({ generalSearch: val }),
     setTargetSearch: val => state => ({ targetSearch: val }),
-    setAutodocId: val => state => ({autodocId: val}),
+    setAutodocId: val => state => ({ autodocId: val }),
 
 };
 
@@ -62,7 +62,7 @@ const Header = () => (
     </section>
 );
 
-const Search = ({actions}) => (
+const Search = ({ actions }) => (
     <div class="level has-text-centered">
         <div class="level-item has-text-centered">
             <div class="column is-three-quarters">
@@ -73,7 +73,7 @@ const Search = ({actions}) => (
                             onkeyup={e => (e.keyCode === 13 ? actions.generalSearch() : "")} />
                     </p>
                     <p class="control">
-                        <a class="button is-info" 
+                        <a class="button is-info"
                             onclick={() => actions.generalSearch()}>Поиск</a>
                     </p>
                 </div>
@@ -89,20 +89,20 @@ const view = (state, actions) => (
         <div class="tile is-ancestor">
             {(state.targetSearch.autodoc && Object.keys(state.targetSearch.autodoc).length > 0) ||
                 (state.generalSearch.autodoc && state.generalSearch.autodoc.length > 0) ?
-                <AutoDoc 
+                <AutoDoc
                     title={'Autodoc'}
                     generalSearch={state.generalSearch.autodoc}
                     targetSearch={state.targetSearch.autodoc}
-                    actions={actions} /> 
+                    actions={actions} />
                 : ''}
 
             {(state.targetSearch.exist && Object.keys(state.targetSearch.exist).length > 0) ||
                 (state.generalSearch.exist && state.generalSearch.exist.length > 0) ?
-                <AutoDoc 
+                <AutoDoc
                     title={'Exist'}
                     generalSearch={state.generalSearch.exist}
                     targetSearch={state.targetSearch.exist}
-                    actions={actions} /> 
+                    actions={actions} />
                 : ''}
         </div>
     </div>
