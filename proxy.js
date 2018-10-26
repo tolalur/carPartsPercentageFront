@@ -10,7 +10,7 @@ app.use(
     proxy({ target: 'http://localhost:3000', changeOrigin: true })
 );
 app.use(
-    '/api/target/:detailNumber/:id',
+    '/api/target/autodoc/:detailNumber/:id',
     proxy({ target: 'http://localhost:3000', changeOrigin: true })
 );
 

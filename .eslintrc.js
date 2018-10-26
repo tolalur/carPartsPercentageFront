@@ -28,5 +28,8 @@ module.exports = {
             "error",
             "always"
         ]
-    }
+    },
+    "plugins": [
+        "react"
+    ],
 };

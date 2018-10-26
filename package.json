@@ -20,7 +20,11 @@
     "parcel-bundler": "^1.9.7"
   },
   "devDependencies": {
+    "acorn-jsx": "^5.0.0",
+    "eslint": "^5.7.0",
+    "eslint-plugin-react": "^7.11.1",
     "express": "^4.16.3",
-    "http-proxy-middleware": "^0.18.0"
+    "http-proxy-middleware": "^0.18.0",
+    "typescript": "^3.1.3"
   }
 }
