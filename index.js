@@ -10,7 +10,8 @@ const state = {
   },
   targetSearch: {
   },
-  autodocId: ''
+  autodocId: '',
+  existId: ''
 };
 
 const actions = {
@@ -30,6 +31,15 @@ const actions = {
   },
   autoDocTargetSearch: () => (state, actions) => {
     axios.get(`/api/target/autodoc/${state.searchString}/${state.autodocId}`)
+      .then(response => {
+        console.log('targetSearch response', response.data);
+        if (response.data) {
+          actions.setTargetSearch(response.data);
+        }
+      }).catch(error => console.log(error));
+  },
+  existTargetSearch: () => (state, actions) => {
+    axios.get(`/api/target/exist/${state.existId}`)
       .then((response) => {
         console.log('targetSearch response', response.data);
         if (response.data) {
@@ -44,6 +54,7 @@ const actions = {
   setGeneralSearch: val => state => ({ generalSearch: val }),
   setTargetSearch: val => state => ({ targetSearch: val }),
   setAutodocId: val => state => ({ autodocId: val }),
+  setExistId: val => state => ({ existId: val }),
 };
 
 const Header = () => (
@@ -90,6 +101,7 @@ const view = (state, actions) => (
         (state.generalSearch.autodoc && state.generalSearch.autodoc.length > 0)) &&
         <ShowSearchResult
           title={'Autodoc'}
+          type={'autodoc'}
           generalSearch={state.generalSearch.autodoc}
           targetSearch={state.targetSearch.autodoc}
           actions={actions} />
@@ -98,6 +110,7 @@ const view = (state, actions) => (
         (state.generalSearch.exist && state.generalSearch.exist.length > 0)) &&
         <ShowSearchResult
           title={'Exist'}
+          type={'exist'}
           generalSearch={state.generalSearch.exist}
           targetSearch={state.targetSearch.exist}
           actions={actions} />

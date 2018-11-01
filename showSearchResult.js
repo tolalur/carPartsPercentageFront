@@ -1,11 +1,11 @@
 import { h } from 'hyperapp';
-const GeneralSearchItem = ({ item, actions }) => (
+const GeneralSearchItem = ({ item, actions, type }) => (
   <li>
     <a href="" onclick={(e) => {
       e.preventDefault();
       console.log('item:', item);
-      actions.setAutodocId(item.id);
-      actions.autoDocTargetSearch();
+      type == 'autodoc' ? actions.setAutodocId(item.id) : actions.setExistId(item.id);
+      type == 'autodoc' ? actions.autoDocTargetSearch() : actions.autoDocTargetSearch();
     }}>
       {item.manufacturerName} - {item.partName}
     </a>
@@ -27,14 +27,13 @@ const TargetSearchItem = ({ item, first }) => {
   );
 };
 
-export const ShowSearchResult = ({ title, generalSearch, actions, targetSearch }) => {
+export const ShowSearchResult = ({ title, generalSearch, actions, targetSearch, type }) => {
   console.clear();
   console.log('generalSearch :', generalSearch);
   console.log('targetSearch :', targetSearch);
 
   const isItNotEmptyObj = (item) => !!item && !!Object.keys(item).length;
   const Title = ({ title, actions, isTargetSearch = false }) => {
-    console.log('isTargetSearch :', isTargetSearch);
     return (
       <p class="title flex f-align-f-e f-justify-content-s-b">
         <span>{title}</span>
@@ -57,7 +56,7 @@ export const ShowSearchResult = ({ title, generalSearch, actions, targetSearch }
             {
               !!((generalSearch && generalSearch.length) && !isItNotEmptyObj(targetSearch))
               &&
-              (<ul>{generalSearch.map(val => <GeneralSearchItem item={val} actions={actions} />)}</ul>)
+              (<ul>{generalSearch.map(val => <GeneralSearchItem type={type} item={val} actions={actions} />)}</ul>)
             }
             {
               isItNotEmptyObj(targetSearch) &&
